@@ -1,8 +1,16 @@
 {
   "functions": {
-    "app/api/**/*": {
-      "maxDuration": 300,
-      "memory": 3008
+    "app/api/claude/route.js": {
+      "runtime": "edge",
+      "memory": 3008,
+      "maxDuration": 60
     }
-  }
+  },
+  "routes": [
+    {
+      "source": "/api/claude",
+      "destination": "/api/claude",
+      "methods": ["POST"]
+    }
+  ]
 }
