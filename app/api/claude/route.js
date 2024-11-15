@@ -26,7 +26,7 @@ export async function POST(req) {
       },
       body: JSON.stringify({
         model: 'claude-3-sonnet-20240229',
-        max_tokens: 150,
+        max_tokens: 4080,
         temperature: 0.7,
         stream: true, // Enable streaming
         messages: [{
