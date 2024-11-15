@@ -39,25 +39,30 @@ const MathTest = () => {
   ];
 
   const askClaude = async (questionText, testQuestion) => {
-    try {
-      const response = await fetch('/api/claude', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          questionText,
-          testQuestion
-        })
-      });
+  try {
+    const response = await fetch('/api/claude', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        questionText,
+        testQuestion
+      })
+    });
 
-      if (!response.ok) throw new Error('API request failed');
-      const data = await response.json();
-      return data.content[0].text;
-    } catch (error) {
-      throw new Error('Failed to get response from Claude');
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to get response from Claude');
     }
-  };
+
+    return data.content[0].text;
+  } catch (error) {
+    console.error('Claude API Error:', error);
+    throw new Error('Failed to get response from Claude. Please try again.');
+  }
+};
 
   const handleQuestionSubmit = async (questionId) => {
     if (!currentUserQuestion.trim()) return;
