@@ -1,7 +1,14 @@
 {
   "functions": {
     "app/api/claude/route.js": {
+      "runtime": "edge",
       "maxDuration": 60
     }
-  }
+  },
+  "routes": [
+    {
+      "source": "/api/claude",
+      "destination": "/api/claude"
+    }
+  ]
 }
