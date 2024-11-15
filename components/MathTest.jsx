@@ -38,49 +38,41 @@ const MathTest = () => {
     }
   ];
 
-  const askClaude = async (questionText, testQuestion) => {
-  try {
-    const response = await fetch('/api/claude', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        questionText,
-        testQuestion
-      })
-    });
-
-    const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.error || 'Failed to get response from Claude');
-    }
-
-    return data.content[0].text;
-  } catch (error) {
-    console.error('Claude API Error:', error);
-    throw new Error('Failed to get response from Claude. Please try again.');
-  }
-};
-
   const handleQuestionSubmit = async (questionId) => {
     if (!currentUserQuestion.trim()) return;
     setIsLoading(true);
     setError(null);
     
     try {
-      const answer = await askClaude(currentUserQuestion, questions[questionId].question);
+      const response = await fetch('/api/claude', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          questionText: currentUserQuestion,
+          testQuestion: questions[questionId].question
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to get response from Claude');
+      }
+
       setUserQuestions({
         ...userQuestions,
         [questionId]: [
           ...(userQuestions[questionId] || []),
-          { question: currentUserQuestion, answer }
+          { question: currentUserQuestion, answer: data.content[0].text }
         ]
       });
       setCurrentUserQuestion('');
     } catch (error) {
-      setError('Error getting response from Claude. Please try again.');
+      setError(error.message === 'Request timed out. Please try again.' ? 
+        'მოთხოვნამ ძალიან დიდხანს გასტანა. გთხოვთ სცადოთ თავიდან.' : 
+        'ვერ მოხერხდა პასუხის მიღება. გთხოვთ სცადოთ თავიდან.');
       console.error('Error:', error);
     } finally {
       setIsLoading(false);
@@ -175,6 +167,11 @@ const MathTest = () => {
                     onChange={(e) => setCurrentUserQuestion(e.target.value)}
                     placeholder="დასვით კითხვა ამ ამოცანის შესახებ..."
                     disabled={isLoading}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && !isLoading && currentUserQuestion.trim()) {
+                        handleQuestionSubmit(currentQuestion);
+                      }
+                    }}
                   />
                   <Button
                     onClick={() => handleQuestionSubmit(currentQuestion)}
