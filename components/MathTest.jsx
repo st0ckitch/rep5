@@ -5,8 +5,6 @@ import { CheckCircle2, XCircle, RotateCcw, HelpCircle, Send } from 'lucide-react
 import { Input } from '../components/ui/input';
 import { Alert, AlertDescription } from '../components/ui/alert';
 
-const ANTHROPIC_API_KEY = process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY;
-
 const MathTest = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -42,20 +40,14 @@ const MathTest = () => {
 
   const askClaude = async (questionText, testQuestion) => {
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('/api/claude', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': ANTHROPIC_API_KEY,
-          'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
-          model: 'claude-3-5-sonnet-20241022',
-          max_tokens: 1000,
-          messages: [{
-            role: 'user',
-            content: `მოცემულია მათემატიკის ტესტის ამოცანა: "${testQuestion}" მომხმარებლის კითხვა: "${questionText}" გთხოვთ დეტალურად აუხსნათ მომხმარებელს ამ ამოცანასთან დაკავშირებული საკითხები.`
-          }]
+          questionText,
+          testQuestion
         })
       });
 
