@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
-
-export const runtime = 'edge'; // Use Edge Runtime
+export const runtime = 'nodejs';  // Change to nodejs runtime
+export const maxDuration = 300;   // 5 minutes
 export const dynamic = 'force-dynamic';
-export const maxDuration = 60;
+
+import { NextResponse } from 'next/server';
 
 export async function POST(req) {
   try {
@@ -16,7 +16,7 @@ export async function POST(req) {
     }
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 55000);
+    const timeoutId = setTimeout(() => controller.abort(), 290000); // 290 seconds
 
     try {
       const response = await fetch('https://api.anthropic.com/v1/messages', {
