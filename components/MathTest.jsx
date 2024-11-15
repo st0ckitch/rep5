@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button } from '../components/ui/button';
 import { CheckCircle2, XCircle, RotateCcw, HelpCircle, Send } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Input } from '../components/ui/input';
+import { Alert, AlertDescription } from '../components/ui/alert';
 
 const ANTHROPIC_API_KEY = process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY;
 
