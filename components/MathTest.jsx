@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, XCircle, RotateCcw, HelpCircle, Send } from 'lucide-react';
 import { Input } from '@/components/ui/input';
