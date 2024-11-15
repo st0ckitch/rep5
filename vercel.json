@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "app/api/claude/route.js": {
+      "maxDuration": 60
+    }
+  }
+}
